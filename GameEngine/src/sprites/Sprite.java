@@ -4,12 +4,14 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 
 import core.IDrawable;
 
-public class Sprite implements IDrawable
+public class Sprite extends Drawable implements IDrawable
 {	
 	public final static int DIRECTION_RIGHT = 0;
 	public final static int DIRECTION_UP_AND_RIGHT = 45;
@@ -20,18 +22,11 @@ public class Sprite implements IDrawable
 	public final static int DIRECTION_DOWN = 270;
 	public final static int DIRECTION_DOWN_AND_RIGHT = 315;
 	
-	
-	
 	protected boolean mIsMoving; 
 	protected float mSpeed;
 	protected int mDirection;	
-	protected String mImageSource;
-	protected BufferedImage mSource;
-	protected int mWidth;
-	protected int mHeight;
-	protected int mSourceX;
-	protected int mSourceY;
 	
+	private ArrayList<BufferedImage> _sourceImageList = new ArrayList<BufferedImage>();	
 	private float _x;
 	private float _y;
 	
@@ -55,26 +50,39 @@ public class Sprite implements IDrawable
 		mDirection = d;
 	}
 	
-	public Sprite(String sourceFileName){
-		mImageSource = sourceFileName;
-		try {
+	public void addSourceImage(String sourcePath){
+		try{
 			ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-			InputStream input = classLoader.getResourceAsStream(mImageSource);
-			mSource = ImageIO.read(input);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			InputStream input = classLoader.getResourceAsStream(sourcePath);
+			_sourceImageList.add(ImageIO.read(input));
+		}catch(IOException e){
+			
+		}
+	}
+	
+	public void clearSourceImages(){
+		_sourceImageList = new ArrayList<BufferedImage>();
+	}
+	
+	public Sprite(String sourceFileName){
+		
+		if(sourceFileName != null && !sourceFileName.isEmpty()){
+			addSourceImage(sourceFileName);
 		}
 	}
 	
 	@Override
 	public void draw(Graphics g) {
-		// TODO Auto-generated method stub
-		if(mSource != null){
-			int x = (int) Math.round(_x);
-			int y = (int) Math.round(_y);
-			g.drawImage(mSource, x, y, x + mWidth, y + mHeight, mSourceX, mSourceY, mSourceX + mWidth, mSourceY + mHeight, null);
-		}	
+		int x = (int) Math.round(_x);
+		int y = (int) Math.round(_y);
+		int sourceX = getSourceX();
+		int sourceY = getSourceY();
+		if (mGid == 4) System.out.println(String.format("x = %d, y = %d", sourceX, sourceY));
+		// iterate through the list of source Images and render each
+		for(Iterator<BufferedImage> i = _sourceImageList.iterator(); i.hasNext();){
+			g.drawImage(i.next(), x, y, x + mWidth, y + mHeight, sourceX, sourceY, sourceX + mWidth, sourceY + mHeight, null);
+		}
+		
 	}
 	
 	

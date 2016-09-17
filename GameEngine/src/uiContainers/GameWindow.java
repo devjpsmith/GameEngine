@@ -34,6 +34,7 @@ public class GameWindow extends JFrame{
 
    private void prepareGUI(){
 	   setSize(FRAME_WIDTH,FRAME_HEIGHT);
+	   setResizable(false);
 	   setLocationRelativeTo(null);
 	   setDefaultCloseOperation(EXIT_ON_CLOSE);
 	   _p = new GamePanel();

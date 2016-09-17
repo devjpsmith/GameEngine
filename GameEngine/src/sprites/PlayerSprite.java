@@ -9,13 +9,6 @@ public class PlayerSprite extends Sprite{
 	
 	private final static int WIDTH = 32;				// the width for the source sprite
 	private final static int HEIGHT = 48;				// the height for the source sprite
-	private final static int YORIENTATION_BACK = 144;		// source Y coord for back view
-	private final static int YORIENTATION_RIGHT = 96;	// source Y coord for right facing view
-	private final static int YORIENTATION_FRONT = 0;	// source Y coord for front view
-	private final static int YORIENTATION_LEFT = 48;	// source Y coord for left view
-	private final static int XORIENTATION_LEFT = 32;		// source X coord for left foot
-	private final static int XORIENTATION_MID = 64;		// source X coord for neutral position
-	private final static int XORIENTATION_RIGHT = 96;	// source X coord for right foot
 	private final static int MOVE_TICKER_MAX = 10;		// determines when the move animation frame should be advanced
 	private final static String _femaleFileSource = "ninja_f.png";	// the file with female char art
 	private final static String _maleFileSource = "images/steampunk_m11.png";	// the file with male char art
@@ -51,8 +44,8 @@ public class PlayerSprite extends Sprite{
 		mWidth = WIDTH;
 		mHeight = HEIGHT;
 		// set an initial neutral stance, facing the user
-		mSourceX = XORIENTATION_MID;
-		mSourceY = YORIENTATION_FRONT;
+		mGid = 1;
+		mSourceTilesAcross = 4;
 		// set the sprite movement speed
 		mSpeed = 1.5f;
 	}
@@ -84,15 +77,16 @@ public class PlayerSprite extends Sprite{
 		// call the base method
 		super.setDirection(d);
 		// for this sprite, we want to change the orientation as well as direction
+//		System.out.println("setDirection");
 		switch(d){
 			case Sprite.DIRECTION_UP_AND_RIGHT:
 			case Sprite.DIRECTION_UP_AND_LEFT:
-			case Sprite.DIRECTION_UP: mSourceY = YORIENTATION_BACK; break;		// show back view
+			case Sprite.DIRECTION_UP: if (mGid < 13) mGid = 13; break;					// switch to back view
 			case Sprite.DIRECTION_DOWN_AND_RIGHT:
 			case Sprite.DIRECTION_DOWN_AND_LEFT:
-			case Sprite.DIRECTION_DOWN: mSourceY = YORIENTATION_FRONT; break;	// show front view
-			case Sprite.DIRECTION_LEFT: mSourceY = YORIENTATION_LEFT; break;		// show left view
-			case Sprite.DIRECTION_RIGHT: mSourceY = YORIENTATION_RIGHT; break;	// show right view	
+			case Sprite.DIRECTION_DOWN: if (mGid > 4)  mGid = 1; break;					// switch to front view
+			case Sprite.DIRECTION_LEFT: if (mGid < 5 || mGid > 8)  mGid = 5; break;		// switch to left view
+			case Sprite.DIRECTION_RIGHT: if (mGid < 9 || mGid > 12)  mGid = 9; break;	// switch to right view	
 		}
 	}
 	
@@ -207,33 +201,15 @@ public class PlayerSprite extends Sprite{
 		_moveTicker++;
 		if(_moveTicker == 1) {
 			_moveTicker = 2; // from now on, while we move, our min ticker value will be 2
-			mSourceX = XORIENTATION_RIGHT; // start off on the right foot :)
+			mGid++; // start off on the right foot :)
 		}
 		if(_moveTicker >= MOVE_TICKER_MAX + 2){ // add 2 to the timer, since we'll start at 2
 			// time to reset the ticker and advance our frame
 			_moveTicker = 2; // start here to keep from stuttering
-			if(_advanceFrameR){
-				// advance source image frame to the right
-				if(mSourceX == XORIENTATION_LEFT){
-					mSourceX = XORIENTATION_MID;
-				}
-				else {
-					mSourceX = XORIENTATION_RIGHT;
-					// time to turn around 
-					_advanceFrameR = false;
-				}
-			}
-			else{
-				// advance source image frame to the left
-				if(mSourceX == XORIENTATION_RIGHT){
-					mSourceX = XORIENTATION_MID;
-				}
-				else {
-					mSourceX = XORIENTATION_LEFT;
-					// time to turn around
-					_advanceFrameR = true;
-				}
-			}
+			if((mGid % mSourceTilesAcross) == 0) 
+				mGid-= mSourceTilesAcross;
+			
+			mGid++;
 		}
 	}
 	
@@ -243,6 +219,11 @@ public class PlayerSprite extends Sprite{
 	public void stopMoving(){
 		mIsMoving = false;
 		_moveTicker = 0;
-		mSourceX = XORIENTATION_MID; // we're stopped, so set the stance to neutral
+		 // we're stopped, so set the stance to neutral
+		if(mGid <=4) mGid = 1;
+		else if(mGid >=5 && mGid <=8) mGid = 5;
+		else if(mGid >=9 && mGid <=12) mGid = 9;
+		else mGid = 13;
+		
 	}
 }
