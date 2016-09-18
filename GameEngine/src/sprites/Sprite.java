@@ -30,6 +30,14 @@ public class Sprite extends Drawable implements IDrawable
 	private float _x;
 	private float _y;
 	
+	public int getWidth(){
+		return mWidth;
+	}
+	
+	public int getHeight(){
+		return mHeight();
+	}
+	
 	public float getX(){
 		return _x;
 	}
@@ -77,7 +85,6 @@ public class Sprite extends Drawable implements IDrawable
 		int y = (int) Math.round(_y);
 		int sourceX = getSourceX();
 		int sourceY = getSourceY();
-		if (mGid == 4) System.out.println(String.format("x = %d, y = %d", sourceX, sourceY));
 		// iterate through the list of source Images and render each
 		for(Iterator<BufferedImage> i = _sourceImageList.iterator(); i.hasNext();){
 			g.drawImage(i.next(), x, y, x + mWidth, y + mHeight, sourceX, sourceY, sourceX + mWidth, sourceY + mHeight, null);

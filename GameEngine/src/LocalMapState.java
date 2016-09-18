@@ -48,7 +48,8 @@ public class LocalMapState extends StateObject implements IState, KeyListener {
 		_playerSprite = new PlayerSprite(PlayerSprite.MALE, mWindow.getMaxRight(0), mWindow.getMaxBottom(0));
 		// set the player in the center of the window
 		_playerSprite.setX((mWindow.getMaxRight(0) / 2) - _playerSprite.getWidth() / 2);
-		_playerSprite.setY((mWindow.getMaxBottom(0) / 2) - _playerSprite.getHeight() / 2);
+		//_playerSprite.setY((mWindow.getMaxBottom(0) / 2) - _playerSprite.getHeight() / 2);
+		_playerSprite.setY(0f);
 		_map = new TiledMap();
 	}
 
@@ -68,6 +69,10 @@ public class LocalMapState extends StateObject implements IState, KeyListener {
 		if(_receivingMoveInput){
 			// we need to update the player pos
 			_playerSprite.move();
+			// get player space
+			
+			// check each corner for what gid it's in on the tile map
+			
 		}
 		else{
 			_playerSprite.stopMoving();
