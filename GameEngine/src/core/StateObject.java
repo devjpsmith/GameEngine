@@ -63,6 +63,12 @@ public abstract class StateObject implements IState {
 				g.setColor(Color.BLACK);
 				g.fillRect(0, 0, GameWindow.FRAME_WIDTH, GameWindow.FRAME_HEIGHT);				
 			}
+
+			@Override
+			public void update() {
+				// TODO Auto-generated method stub
+				
+			}
 			
 		});
 		if(DEBUG_MODE){
@@ -75,6 +81,12 @@ public abstract class StateObject implements IState {
 					g.setColor(Color.WHITE);
 					g.drawString(String.format("FPS: %1$.2f", _fps) , 10, 20);
 				}
+
+				@Override
+				public void update() {
+					// TODO Auto-generated method stub
+					
+				}
 					
 			});
 			// add the skipped frames counter right under the FPS 
@@ -85,6 +97,12 @@ public abstract class StateObject implements IState {
 					g.setFont(new Font("Ariel", 1, 10));
 					g.setColor(Color.WHITE);
 					g.drawString(String.format("Skipped Frames: %s", _skippedFrames) , 10, 30);
+				}
+
+				@Override
+				public void update() {
+					// TODO Auto-generated method stub
+					
 				}
 					
 			});

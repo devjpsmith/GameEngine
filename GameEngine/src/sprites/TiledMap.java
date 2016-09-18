@@ -163,6 +163,12 @@ public class TiledMap implements IDrawable{
 		int sourceY = (Math.floorDiv(gid - 1, sourceWidthInTiles)) * tileSize;
 		g.drawImage(mSource, x, y, x + tileSize, y + tileSize, sourceX, sourceY, sourceX + tileSize, sourceY + tileSize, null);
 	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		
+	}
 		
 }
 

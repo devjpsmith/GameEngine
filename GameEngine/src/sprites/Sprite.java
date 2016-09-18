@@ -12,51 +12,38 @@ import javax.imageio.ImageIO;
 import core.IDrawable;
 
 public class Sprite extends Drawable implements IDrawable
-{	
-	public final static int DIRECTION_RIGHT = 0;
-	public final static int DIRECTION_UP_AND_RIGHT = 45;
-	public final static int DIRECTION_UP = 90;
-	public final static int DIRECTION_UP_AND_LEFT = 135;
-	public final static int DIRECTION_LEFT = 180;
-	public final static int DIRECTION_DOWN_AND_LEFT = 225;
-	public final static int DIRECTION_DOWN = 270;
-	public final static int DIRECTION_DOWN_AND_RIGHT = 315;
-	
+{		
 	protected boolean mIsMoving; 
-	protected float mSpeed;
-	protected int mDirection;	
+	protected Speed mSpeed;
 	
 	private ArrayList<BufferedImage> _sourceImageList = new ArrayList<BufferedImage>();	
-	private float _x;
-	private float _y;
+	protected float mX;
+	protected float mY;
 	
 	public int getWidth(){
 		return mWidth;
 	}
 	
 	public int getHeight(){
-		return mHeight();
+		return mHeight;
 	}
 	
 	public float getX(){
-		return _x;
+		return mX;
 	}
 	
 	public float getY(){
-		return _y;
+		return mY;
 	}
 	
 	public void setX(float x){
-		_x = x;
+		mX = x;
 	}
 	
 	public void setY(float y){
-		_y = y;
+		mY = y;
 	}
 	
-	public void setDirection(int d){
-		mDirection = d;
-	}
 	
 	public void addSourceImage(String sourcePath){
 		try{
@@ -81,14 +68,20 @@ public class Sprite extends Drawable implements IDrawable
 	
 	@Override
 	public void draw(Graphics g) {
-		int x = (int) Math.round(_x);
-		int y = (int) Math.round(_y);
+		int x = (int) Math.round(mX);
+		int y = (int) Math.round(mY);
 		int sourceX = getSourceX();
 		int sourceY = getSourceY();
 		// iterate through the list of source Images and render each
 		for(Iterator<BufferedImage> i = _sourceImageList.iterator(); i.hasNext();){
 			g.drawImage(i.next(), x, y, x + mWidth, y + mHeight, sourceX, sourceY, sourceX + mWidth, sourceY + mHeight, null);
 		}
+		
+	}
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
 		
 	}
 	
