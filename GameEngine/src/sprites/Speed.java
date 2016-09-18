@@ -93,7 +93,7 @@ public class Speed {
 		switch(d){
 		case DIRECTION_LEFT:
 		case DIRECTION_RIGHT: _xDirection = d; break;
-		default:
+		default: _xDirection = DIRECTION_NONE;
 			break;
 		
 		}
@@ -107,7 +107,7 @@ public class Speed {
 		switch(d){
 		case DIRECTION_UP:
 		case DIRECTION_DOWN: _yDirection = d; break;
-		default:
+		default: _yDirection = DIRECTION_NONE;
 			break;
 		}
 	}

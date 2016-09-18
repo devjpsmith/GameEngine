@@ -103,19 +103,19 @@ public class PlayerSprite extends Sprite implements KeyListener{
 		// set each point, within the bounds of the frame	
 		setX(Math.max(Math.min(newX, _xBoundry), 0));
 		setY(Math.max(Math.min(newY, _yBoundry), 0));
+		
+		// update the image
 		if(mSpeed.getXv() != 0 || mSpeed.getYv() != 0){
+						
 			_moveTicker++;
 			if(_moveTicker == 1) {
 				_moveTicker = 2; // from now on, while we move, our min ticker value will be 2
-
-				if (mSpeed.getXDirection() == Speed.DIRECTION_LEFT) mGid = 5;
-				else if (mSpeed.getXDirection() == Speed.DIRECTION_RIGHT) mGid = 9;
-				
-				if (mSpeed.getYDirection() == Speed.DIRECTION_DOWN) mGid = 1;
-				else if (mSpeed.getYDirection() == Speed.DIRECTION_UP); mGid = 13;
-
-				System.out.println(String.format("X = %d, Y = %d",  mSpeed.getXDirection(), mSpeed.getYDirection()));
-				
+				if (mSpeed.getXDirection() != Speed.DIRECTION_NONE){
+					mGid = (mSpeed.getXDirection() == Speed.DIRECTION_LEFT ? 5 : 9);
+				}
+				if (mSpeed.getYDirection() != Speed.DIRECTION_NONE){
+					mGid = (mSpeed.getYDirection() == Speed.DIRECTION_DOWN ? 1 : 13);
+				}
 				mGid++; // start off on the right foot :)
 			}
 			if(_moveTicker >= MOVE_TICKER_MAX + 2){ // add 2 to the timer, since we'll start at 2
@@ -256,6 +256,7 @@ public class PlayerSprite extends Sprite implements KeyListener{
 				left = true;
 			}
 			
+			
 			if(up){
 				mSpeed.setYDirection(Speed.DIRECTION_UP);
 				mSpeed.setYv(VELOCITY);
@@ -267,7 +268,6 @@ public class PlayerSprite extends Sprite implements KeyListener{
 			else{
 				mSpeed.setYDirection(Speed.DIRECTION_NONE);
 				mSpeed.setYv(0);
-				System.out.println(String.format("%d", mSpeed.getYDirection()));
 			}				
 			
 			if(left){
